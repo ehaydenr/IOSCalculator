@@ -16,7 +16,8 @@
 @property (strong) Calculator *calculator;
 
 -(IBAction)write:(UIButton *)sender;
--(IBAction)clear:(id)sender;
+-(IBAction)clearCurrentBuffer:(id)sender;
+-(IBAction)clearEverything:(id)sender;
 -(IBAction)operate:(UIButton *)operation;
 -(IBAction)compute:(id)sender;
 

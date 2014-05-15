@@ -17,10 +17,11 @@
 
 -(void)addToBuffer:(NSString *)number;
 -(void)clearBuffer;
--(NSString *)add;
--(NSString *)subtract;
--(NSString *)multiply;
--(NSString *)divide;
+-(void)clearCurrentBuffer;
+-(NSString *)add:(float)previous with:(float)current;
+-(NSString *)subtract:(float)previous with:(float)current;
+-(NSString *)multiply:(float)previous with:(float)current;
+-(NSString *)divide:(float)previous with:(float)current;
 -(void)compute;
 -(void)operate:(NSString *)operation;
 

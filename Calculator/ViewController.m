@@ -20,7 +20,12 @@
     [self updateUI];
 }
 
--(IBAction)clear:(id)sender{
+-(IBAction)clearCurrentBuffer:(id)sender{
+    [self.calculator clearCurrentBuffer];
+    [self updateUI];
+}
+
+-(IBAction)clearEverything:(id)sender{
     [self.calculator clearBuffer];
     [self updateUI];
 }

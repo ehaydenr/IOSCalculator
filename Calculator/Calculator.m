@@ -10,8 +10,6 @@
 
 @implementation Calculator
 
-@synthesize justComputed;
-
 -(void)printBuffers{
     NSLog(@"Current Buffer: %@ \nPrevious Buffer: %@", [self currentBuffer], [self previousBuffer]);
 }
@@ -31,7 +29,6 @@
 
 -(void)addToBuffer:(NSString *)number{
     if([self justComputed]){
-        //[[self previousBuffer] setString:@"0"];
         [[self currentBuffer] setString:@"0"];
         [self setJustComputed:FALSE];
     }
@@ -42,34 +39,30 @@
     }
 }
 
+-(void)clearCurrentBuffer{
+    [self.currentBuffer setString:@"0"];
+}
+
 -(void)clearBuffer{
     [self setPendingOperation:@""];
     [self.previousBuffer setString:@"0"];
     [self.currentBuffer setString:@"0"];
 }
 
--(NSString *)add{
-    float oldPrevious = [[self previousBuffer] floatValue];
-    float valueToBeAdded = [[self currentBuffer] floatValue];
-    float result = oldPrevious + valueToBeAdded;
+-(NSString *)add:(float)previous with:(float)current{
+    //float result = previous + current;
+    return [NSString stringWithFormat:@"%f", previous + current];
+}
+-(NSString *)subtract:(float)previous with:(float)current{
+    float result = previous - current;
     return [NSString stringWithFormat:@"%f", result];
 }
--(NSString *)subtract{
-    float oldPrevious = [[self previousBuffer] floatValue];
-    float valueToBeSubtracted = [[self currentBuffer] floatValue];
-    float result = oldPrevious - valueToBeSubtracted;
+-(NSString *)multiply:(float)previous with:(float)current{
+    float result = previous *current;
     return [NSString stringWithFormat:@"%f", result];
 }
--(NSString *)multiply{
-    float oldPrevious = [[self previousBuffer] floatValue];
-    float valueToBeMultiplied = [[self currentBuffer] floatValue];
-    float result = oldPrevious *valueToBeMultiplied;
-    return [NSString stringWithFormat:@"%f", result];
-}
--(NSString *)divide{
-    float oldPrevious = [[self previousBuffer] floatValue];
-    float valueToBeDivided = [[self currentBuffer] floatValue];
-    float result = oldPrevious / valueToBeDivided;
+-(NSString *)divide:(float)previous with:(float)current{
+    float result = previous / current;
     return [NSString stringWithFormat:@"%f", result];
 }
 
@@ -84,16 +77,17 @@
 -(void)executePendingOperation{
 
     NSString* op = [self pendingOperation];
+    float previousBufferValue = [[self previousBuffer] floatValue];
+    float currentBufferValue = [[self currentBuffer] floatValue];
     if([op isEqualToString:@"+"]){
-        [self.previousBuffer setString:[self add]];
+        [self.previousBuffer setString:[self add:previousBufferValue with:currentBufferValue]];
     }else if([op isEqualToString:@"-"]){
-        [self.previousBuffer setString:[self subtract]];
+        [self.previousBuffer setString:[self subtract:previousBufferValue with:currentBufferValue]];
     }else if([op isEqualToString:@"x"]){
-        [self.previousBuffer setString:[self multiply]];
+        [self.previousBuffer setString:[self multiply:previousBufferValue with:currentBufferValue]];
     }else if([op isEqualToString:@"/"]){
-        [self.previousBuffer setString:[self divide]];
+        [self.previousBuffer setString:[self divide:previousBufferValue with:currentBufferValue]];
     }else {
-        NSLog(@"No pending operations");
         [self.previousBuffer setString:[self currentBuffer]];
     }
 }
@@ -105,7 +99,6 @@
         [self setJustComputed:FALSE];
     }
     [self executePendingOperation];
-    //[[self currentBuffer] setString:@"0"];
     [[self currentBuffer] setString:[self previousBuffer]];
     [self setJustComputed:TRUE];
     [self setPendingOperation:operation];
